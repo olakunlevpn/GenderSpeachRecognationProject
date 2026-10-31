@@ -1,0 +1,38 @@
+audio:
+  sample_rate: 16000
+  n_mfcc: 20
+  fmin_f0: 65.0
+  fmax_f0: 500.0
+  n_formants: 4
+  lpc_preemphasis: 0.97
+  trim_top_db: 25.0
+  max_seq_frames: 300
+
+dataset:
+  min_net_votes: 1
+  test_size: 0.15
+  val_size: 0.15
+  group_column: "client_id"
+
+classical_models:
+  svm:
+    kernel: "rbf"
+    C: 2.0
+    gamma: "scale"
+  random_forest:
+    n_estimators: 150
+    max_depth: 14
+
+deep_learning:
+  model: "SpeechBiLSTM"
+  hidden_dim: 64
+  num_layers: 2
+  dropout: 0.3
+  batch_size: 16
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  epochs: 15
+
+deployment:
+  port: 8501
+  platform: "railway"

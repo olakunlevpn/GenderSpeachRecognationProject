@@ -1,0 +1,233 @@
+[
+  {
+    "model_name": "SVM (RBF)",
+    "is_deep": false,
+    "latency_per_sample_ms": 0.0568567484151572,
+    "gender": {
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "confusion_matrix": [
+        [
+          12,
+          0
+        ],
+        [
+          0,
+          4
+        ]
+      ]
+    },
+    "age": {
+      "accuracy": 0.1875,
+      "macro_f1": 0.13095238095238096,
+      "off_by_one_acc": 0.4375,
+      "mae": 2.3125,
+      "confusion_matrix": [
+        [
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          2,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "model_name": "Random Forest",
+    "is_deep": false,
+    "latency_per_sample_ms": 3.482137995888479,
+    "gender": {
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "confusion_matrix": [
+        [
+          12,
+          0
+        ],
+        [
+          0,
+          4
+        ]
+      ]
+    },
+    "age": {
+      "accuracy": 0.375,
+      "macro_f1": 0.3703703703703704,
+      "off_by_one_acc": 0.6875,
+      "mae": 1.5,
+      "confusion_matrix": [
+        [
+          2,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          2,
+          2,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          2,
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "model_name": "BiLSTM + Attention",
+    "is_deep": true,
+    "latency_per_sample_ms": 1.860424512415193,
+    "gender": {
+      "accuracy": 0.75,
+      "macro_f1": 0.42857142857142855,
+      "precision": 0.375,
+      "recall": 0.5,
+      "confusion_matrix": [
+        [
+          12,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    "age": {
+      "accuracy": 0.1875,
+      "macro_f1": 0.05263157894736842,
+      "off_by_one_acc": 0.1875,
+      "mae": 3.5,
+      "confusion_matrix": [
+        [
+          3,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  }
+]

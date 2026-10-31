@@ -1,0 +1,21 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Data files
+data/raw/*.tar.gz
+data/raw/*.mp3
+data/synthetic/clips/
+data/samples/*.wav
+data/samples/*.mp3
+
+# Testing & caches
+.pytest_cache/
+
