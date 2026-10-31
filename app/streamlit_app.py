@@ -9,6 +9,13 @@ Supports:
 
 import io
 from pathlib import Path
+import sys
+
+# Ensure repository root is on sys.path when running from app/ subdirectory
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -41,7 +48,7 @@ model_choice = st.sidebar.selectbox(
     ["SVM (Classical ML)", "Random Forest (Classical ML)", "BiLSTM + Attention (Deep Learning)"],
 )
 
-models_dir = Path("saved_models")
+models_dir = REPO_ROOT / "saved_models"
 
 
 @st.cache_resource
