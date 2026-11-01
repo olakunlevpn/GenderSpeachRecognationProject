@@ -10,6 +10,7 @@ dependencies = [
     "matplotlib>=3.11.2",
     "numpy<2",
     "pandas>=2.3.3",
+    "pyarrow<19",
     "pytest>=9.2.0",
     "scikit-learn>=1.9.1",
     "scipy>=1.17.1",

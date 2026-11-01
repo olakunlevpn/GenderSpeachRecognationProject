@@ -25,6 +25,7 @@ COPY pyproject.toml .
 # Install dependencies (CPU-only PyTorch to minimize container size to < 500MB)
 RUN uv pip install --system --no-cache \
     "numpy<2" \
+    "pyarrow<19" \
     scipy \
     soundfile \
     librosa \
