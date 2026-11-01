@@ -120,22 +120,28 @@ with input_tab2:
         source_name = uploaded_file.name
 
 with input_tab3:
-    st.markdown("Choose a pre-synthesized sample to verify features and predictions:")
-    demo_dir = REPO_ROOT / "data" / "synthetic" / "clips"
-    if demo_dir.is_dir():
-        demo_files = sorted(list(demo_dir.glob("*.wav")))[:15]
-        if demo_files:
-            sample_options = {f.name: f for f in demo_files}
-            chosen_sample = st.selectbox(
-                "Choose sample voice clip",
-                list(sample_options.keys()),
-                key=f"demo_select_{st.session_state.audio_version}",
-            )
-            if st.button("Load This Demo Clip", key="load_demo_btn", use_container_width=True):
-                with open(sample_options[chosen_sample], "rb") as f:
-                    st.session_state["demo_audio_bytes"] = f.read()
-                st.session_state["demo_audio_name"] = chosen_sample
-                st.rerun()
+    st.markdown("Choose a pre-recorded real sample or synthetic clip:")
+    demo_samples_dir = REPO_ROOT / "data" / "samples"
+    demo_synth_dir = REPO_ROOT / "data" / "synthetic" / "clips"
+
+    demo_files = []
+    if demo_samples_dir.is_dir():
+        demo_files.extend(sorted(list(demo_samples_dir.glob("*.wav"))))
+    if demo_synth_dir.is_dir():
+        demo_files.extend(sorted(list(demo_synth_dir.glob("*.wav")))[:10])
+
+    if demo_files:
+        sample_options = {f.name: f for f in demo_files}
+        chosen_sample = st.selectbox(
+            "Choose sample voice clip",
+            list(sample_options.keys()),
+            key=f"demo_select_{st.session_state.audio_version}",
+        )
+        if st.button("Load This Demo Clip", key="load_demo_btn", use_container_width=True):
+            with open(sample_options[chosen_sample], "rb") as f:
+                st.session_state["demo_audio_bytes"] = f.read()
+            st.session_state["demo_audio_name"] = chosen_sample
+            st.rerun()
 
 # Fallback to demo audio if set in session state and no mic/upload override
 if audio_bytes is None and "demo_audio_bytes" in st.session_state:

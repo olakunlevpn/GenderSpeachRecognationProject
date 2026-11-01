@@ -16,9 +16,11 @@ from src.audio.features import extract_tabular_features, extract_sequential_feat
 # Canonical mappings
 GENDER_MAP: Dict[str, int] = {
     "male": 0,
+    "male_masculine": 0,
     "female": 1,
+    "female_feminine": 1,
 }
-REV_GENDER_MAP = {v: k for k, v in GENDER_MAP.items()}
+REV_GENDER_MAP = {0: "male", 1: "female"}
 
 AGE_CATEGORIES: List[str] = [
     "teens",
@@ -34,6 +36,7 @@ AGE_MAP: Dict[str, int] = {
     "twenties": 1,
     "thirties": 2,
     "forties": 3,
+    "fourties": 3,
     "fifties": 4,
     "sixties": 5,
     "seventies": 6,
