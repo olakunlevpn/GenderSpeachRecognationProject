@@ -27,6 +27,9 @@ from src.audio.features import extract_features_dict, extract_pitch_f0, extract_
 from src.audio.preprocessor import load_and_preprocess_audio
 from src.models.classical import ClassicalSpeechPipeline
 from src.models.rnn import DeepSpeechPipeline
+import importlib
+import app.icons
+importlib.reload(app.icons)
 from app.icons import lucide_svg, icon_header, get_theme_styles
 
 # Page configuration
