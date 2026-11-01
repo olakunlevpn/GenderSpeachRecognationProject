@@ -1,0 +1,13 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+numpy<2
+pyarrow<19
+scipy
+soundfile
+librosa
+scikit-learn
+joblib
+pandas
+matplotlib
+streamlit
+tabulate
