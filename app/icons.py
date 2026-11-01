@@ -1,4 +1,4 @@
-"""Lucide SVG Icons helper with standard CSS-variable theme adaptation for Streamlit."""
+"""Lucide SVG Icons helper using standard theme-native inheritance for Streamlit."""
 
 LUCIDE_SVG_PATHS = {
     "mic": '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
@@ -18,87 +18,14 @@ LUCIDE_SVG_PATHS = {
 }
 
 
-def get_theme_styles() -> str:
-    """Standard, theme-native CSS that dynamically blends with Streamlit's --text-color
-
-    and --background-color for 100% WCAG contrast in BOTH Light and Dark themes.
-    """
-    return """
-    <style>
-    /* Heading text dynamically inherits Streamlit's native theme text color */
-    .icon-heading {
-        display: flex;
-        align-items: center;
-        margin-top: 1.3rem;
-        margin-bottom: 0.7rem;
-        font-weight: 700;
-        letter-spacing: -0.015em;
-        color: var(--text-color, #111827) !important;
-    }
-    .icon-heading h1, h1.icon-heading { font-size: 1.85rem; }
-    .icon-heading h2, h2.icon-heading { font-size: 1.35rem; }
-    .icon-heading h3, h3.icon-heading { font-size: 1.15rem; }
-
-    /* Lucide Icon Badge Chip */
-    .lucide-chip {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        padding: 6px;
-        margin-right: 10px;
-        flex-shrink: 0;
-        transition: transform 0.15s ease, background 0.2s ease;
-    }
-    .lucide-chip:hover {
-        transform: scale(1.05);
-    }
-
-    /* 
-       Standard dynamic color derivation:
-       Uses color-mix with Streamlit's native --text-color so that:
-       - On Light backgrounds (--text-color is dark #31333F):
-         Icons automatically become deep, saturated, high-contrast jewel tones (WCAG 7+:1).
-         Background chips become subtle pastel tints (12% opacity).
-       - On Dark backgrounds (--text-color is light #FAFAFA):
-         Icons automatically become luminous, vivid tones.
-         Background chips become glowing translucent badges.
-    */
-    .chip-blue {
-        color: color-mix(in srgb, #2563eb 72%, var(--text-color, #1e40af));
-        background: color-mix(in srgb, #2563eb 12%, transparent);
-        border: 1px solid color-mix(in srgb, #2563eb 28%, transparent);
-    }
-
-    .chip-purple {
-        color: color-mix(in srgb, #7c3aed 72%, var(--text-color, #6d28d9));
-        background: color-mix(in srgb, #7c3aed 12%, transparent);
-        border: 1px solid color-mix(in srgb, #7c3aed 28%, transparent);
-    }
-
-    .chip-green {
-        color: color-mix(in srgb, #059669 72%, var(--text-color, #047857));
-        background: color-mix(in srgb, #059669 12%, transparent);
-        border: 1px solid color-mix(in srgb, #059669 28%, transparent);
-    }
-
-    .chip-amber {
-        color: color-mix(in srgb, #d97706 72%, var(--text-color, #b45309));
-        background: color-mix(in srgb, #d97706 12%, transparent);
-        border: 1px solid color-mix(in srgb, #d97706 28%, transparent);
-    }
-    </style>
-    """
-
-
 def lucide_svg(
     name: str,
     size: int = 20,
     color: str = "currentColor",
-    stroke_width: float = 2.0,
+    stroke_width: float = 2.2,
     extra_style: str = "",
 ) -> str:
-    """Returns standalone inline SVG element from Lucide icons."""
+    """Returns a standalone inline SVG element from Lucide icons with currentColor stroke."""
     paths = LUCIDE_SVG_PATHS.get(name, LUCIDE_SVG_PATHS["sparkles"])
     style_attr = f'style="vertical-align: middle; display: block; {extra_style}"'
     return (
@@ -108,22 +35,34 @@ def lucide_svg(
     )
 
 
+def icon_pill(name: str, size: int = 18) -> str:
+    """Returns a theme-adaptive badge chip that naturally adapts to Streamlit Light and Dark modes."""
+    svg = lucide_svg(name, size=size, color="currentColor")
+    # Uses rgba(128, 128, 128, 0.15) which creates a subtle gray pill on white and a sleek dark pill on dark
+    return (
+        f'<span style="display: inline-flex; align-items: center; justify-content: center; '
+        f'vertical-align: -4px; margin-right: 9px; padding: 5px; border-radius: 8px; '
+        f'background: rgba(128, 128, 128, 0.16); border: 1px solid rgba(128, 128, 128, 0.28); '
+        f'color: inherit;">{svg}</span>'
+    )
+
+
 def icon_header(
     title: str,
     icon_name: str,
     level: int = 2,
-    variant: str = "blue",
     size: int = 20,
+    **kwargs,
 ) -> str:
-    """Returns HTML for a heading with a theme-adaptive Lucide icon badge."""
-    svg = lucide_svg(icon_name, size=size, color="currentColor")
-    tag = f"h{level}"
-    font_sizes = {1: "1.9rem", 2: "1.35rem", 3: "1.15rem"}
-    f_size = font_sizes.get(level, "1.2rem")
+    """Generates standard Streamlit Markdown heading syntax (#, ##, ###)
 
-    return (
-        f'<{tag} class="icon-heading" style="font-size: {f_size};">'
-        f'<span class="lucide-chip chip-{variant}">{svg}</span>'
-        f'<span>{title}</span>'
-        f'</{tag}>'
-    )
+    containing an inline Lucide vector icon badge.
+
+    Because it outputs standard Markdown headings, Streamlit's Emotion engine
+    directly controls the typography and text color:
+    - Pure white in Dark Mode
+    - Deep charcoal in Light Mode
+    """
+    prefix = "#" * level
+    pill = icon_pill(icon_name, size=size)
+    return f"{prefix} {pill}{title}"
