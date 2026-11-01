@@ -73,15 +73,34 @@ def load_models():
 
 svm_pipeline, rf_pipeline, bilstm_pipeline = load_models()
 
+# Session state for resetting/re-recording
+if "audio_version" not in st.session_state:
+    st.session_state.audio_version = 0
+
+def clear_active_audio():
+    st.session_state.audio_version += 1
+    st.session_state.pop("demo_audio_bytes", None)
+    st.session_state.pop("demo_audio_name", None)
+
 # Audio Input Section
-st.subheader("1. Provide Speech Audio")
-input_tab1, input_tab2 = st.tabs(["🎤 Record Microphone", "📁 Upload Audio File"])
+col_sec_hdr, col_sec_reset = st.columns([4, 1.3])
+with col_sec_hdr:
+    st.subheader("1. Provide Speech Audio")
+with col_sec_reset:
+    if st.button("🔄 Record New / Reset", use_container_width=True):
+        clear_active_audio()
+        st.rerun()
+
+input_tab1, input_tab2, input_tab3 = st.tabs(["🎤 Record Microphone", "📁 Upload Audio File", "🎧 Demo Samples"])
 
 audio_bytes = None
 source_name = None
 
 with input_tab1:
-    recorded_audio = st.audio_input("Record a 2-5 second sentence (e.g., 'The quick brown fox jumps over the lazy dog')")
+    recorded_audio = st.audio_input(
+        "Record a 2-5 second sentence (e.g., 'The quick brown fox jumps over the lazy dog')",
+        key=f"audio_input_{st.session_state.audio_version}",
+    )
     if recorded_audio is not None:
         audio_bytes = recorded_audio.read()
         source_name = "Microphone Recording"
@@ -90,13 +109,44 @@ with input_tab2:
     uploaded_file = st.file_uploader(
         "Upload audio clip (.wav, .mp3, .ogg, .flac)",
         type=["wav", "mp3", "ogg", "flac"],
+        key=f"file_uploader_{st.session_state.audio_version}",
     )
     if uploaded_file is not None:
         audio_bytes = uploaded_file.read()
         source_name = uploaded_file.name
 
+with input_tab3:
+    st.markdown("Choose a pre-synthesized sample to verify features and predictions:")
+    demo_dir = REPO_ROOT / "data" / "synthetic" / "clips"
+    if demo_dir.is_dir():
+        demo_files = sorted(list(demo_dir.glob("*.wav")))[:15]
+        if demo_files:
+            sample_options = {f.name: f for f in demo_files}
+            chosen_sample = st.selectbox(
+                "Choose sample voice clip",
+                list(sample_options.keys()),
+                key=f"demo_select_{st.session_state.audio_version}",
+            )
+            if st.button("Load This Demo Clip", key="load_demo_btn", use_container_width=True):
+                with open(sample_options[chosen_sample], "rb") as f:
+                    st.session_state["demo_audio_bytes"] = f.read()
+                st.session_state["demo_audio_name"] = chosen_sample
+                st.rerun()
+
+# Fallback to demo audio if set in session state and no mic/upload override
+if audio_bytes is None and "demo_audio_bytes" in st.session_state:
+    audio_bytes = st.session_state["demo_audio_bytes"]
+    source_name = st.session_state.get("demo_audio_name", "Demo Sample")
+
 if audio_bytes is not None:
-    st.audio(audio_bytes, format="audio/wav")
+    col_play, col_clear = st.columns([4.5, 1.5])
+    with col_play:
+        st.caption(f"Currently Analyzing: **{source_name}**")
+        st.audio(audio_bytes, format="audio/wav")
+    with col_clear:
+        if st.button("🗑️ Clear Recording", use_container_width=True):
+            clear_active_audio()
+            st.rerun()
 
     with st.spinner("Processing audio and extracting acoustic features..."):
         try:
