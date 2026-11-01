@@ -98,7 +98,7 @@ source_name = None
 
 with input_tab1:
     recorded_audio = st.audio_input(
-        "Record a 2-5 second sentence (e.g., 'The quick brown fox jumps over the lazy dog')",
+        "Speak any sentence or phrase naturally for 2–5 seconds (e.g. greeting, counting, or reading any text)",
         key=f"audio_input_{st.session_state.audio_version}",
     )
     if recorded_audio is not None:
