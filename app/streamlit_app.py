@@ -83,11 +83,11 @@ def clear_active_audio():
     st.session_state.pop("demo_audio_name", None)
 
 # Audio Input Section
-col_sec_hdr, col_sec_reset = st.columns([4, 1.3])
+col_sec_hdr, col_sec_reset = st.columns([4, 1.2])
 with col_sec_hdr:
     st.subheader("1. Provide Speech Audio")
 with col_sec_reset:
-    if st.button("🔄 Record New / Reset", use_container_width=True):
+    if st.button("🎤 Record New", use_container_width=True):
         clear_active_audio()
         st.rerun()
 
@@ -139,14 +139,8 @@ if audio_bytes is None and "demo_audio_bytes" in st.session_state:
     source_name = st.session_state.get("demo_audio_name", "Demo Sample")
 
 if audio_bytes is not None:
-    col_play, col_clear = st.columns([4.5, 1.5])
-    with col_play:
-        st.caption(f"Currently Analyzing: **{source_name}**")
-        st.audio(audio_bytes, format="audio/wav")
-    with col_clear:
-        if st.button("🗑️ Clear Recording", use_container_width=True):
-            clear_active_audio()
-            st.rerun()
+    st.caption(f"Currently Analyzing: **{source_name}**")
+    st.audio(audio_bytes, format="audio/wav")
 
     with st.spinner("Processing audio and extracting acoustic features..."):
         try:
