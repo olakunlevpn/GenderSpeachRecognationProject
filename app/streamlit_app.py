@@ -27,7 +27,7 @@ from src.audio.features import extract_features_dict, extract_pitch_f0, extract_
 from src.audio.preprocessor import load_and_preprocess_audio
 from src.models.classical import ClassicalSpeechPipeline
 from src.models.rnn import DeepSpeechPipeline
-from app.icons import lucide_svg, icon_header
+from app.icons import lucide_svg, icon_header, get_theme_styles
 
 # Page configuration
 st.set_page_config(
@@ -36,14 +36,17 @@ st.set_page_config(
     layout="wide",
 )
 
-st.markdown(icon_header("Voice Gender & Age Predictor", "audio-lines", level=1, size=30), unsafe_allow_html=True)
+# Inject theme-adaptive CSS for high-contrast dark/light mode icon badges
+st.markdown(get_theme_styles(), unsafe_allow_html=True)
+
+st.markdown(icon_header("Voice Gender & Age Predictor", "audio-lines", level=1, variant="blue", size=26), unsafe_allow_html=True)
 st.markdown(
     "Analyze acoustic speech signals (pitch $F_0$, formants $F_1\\text{--}F_4$, MFCCs, prosody) "
     "using **Classical ML (SVM, Random Forest)** and **Deep Learning (BiLSTM + Attention)**."
 )
 
 # Sidebar: Model and Configuration
-st.sidebar.markdown(icon_header("Configuration", "sliders", level=3, size=18), unsafe_allow_html=True)
+st.sidebar.markdown(icon_header("Configuration", "sliders", level=3, variant="purple", size=18), unsafe_allow_html=True)
 model_choice = st.sidebar.selectbox(
     "Select Model Architecture",
     ["SVM (Classical ML)", "Random Forest (Classical ML)", "BiLSTM + Attention (Deep Learning)"],
@@ -86,7 +89,7 @@ def clear_active_audio():
 # Audio Input Section
 col_sec_hdr, col_sec_reset = st.columns([4, 1.2])
 with col_sec_hdr:
-    st.markdown(icon_header("1. Provide Speech Audio", "mic", level=2, size=22), unsafe_allow_html=True)
+    st.markdown(icon_header("1. Provide Speech Audio", "mic", level=2, variant="blue", size=20), unsafe_allow_html=True)
 with col_sec_reset:
     if st.button("Record New", use_container_width=True):
         clear_active_audio()
@@ -160,7 +163,7 @@ if audio_bytes is not None:
     features = extract_features_dict(y, sr=sr)
 
     # Predictions
-    st.markdown(icon_header("2. Model Predictions", "cpu", level=2, size=22), unsafe_allow_html=True)
+    st.markdown(icon_header("2. Model Predictions", "cpu", level=2, variant="purple", size=20), unsafe_allow_html=True)
 
     selected_pipeline = None
     if "SVM" in model_choice:
@@ -181,7 +184,7 @@ if audio_bytes is not None:
         col_res1, col_res2 = st.columns(2)
 
         with col_res1:
-            st.markdown(icon_header("Predicted Gender", "user", level=3, size=18), unsafe_allow_html=True)
+            st.markdown(icon_header("Predicted Gender", "user", level=3, variant="blue", size=18), unsafe_allow_html=True)
             gender_label = pred["gender"].capitalize()
             conf = pred.get("gender_confidence", 0.0) * 100
             st.info(f"**{gender_label}** (Confidence: {conf:.1f}%)")
@@ -194,7 +197,7 @@ if audio_bytes is not None:
                 st.bar_chart(df_g.set_index("Gender"))
 
         with col_res2:
-            st.markdown(icon_header("Predicted Age Range", "clock", level=3, size=18), unsafe_allow_html=True)
+            st.markdown(icon_header("Predicted Age Range", "clock", level=3, variant="green", size=18), unsafe_allow_html=True)
             age_label = pred["age_range"].replace("_", " ").title()
             conf_a = pred.get("age_confidence", 0.0) * 100
             st.success(f"**{age_label}** (Confidence: {conf_a:.1f}%)")
@@ -207,7 +210,7 @@ if audio_bytes is not None:
                 st.bar_chart(df_a.set_index("Age Range"))
 
     # Acoustic Biomarkers & Visualizations
-    st.markdown(icon_header("3. Acoustic Biomarkers & Spectrogram", "activity", level=2, size=22), unsafe_allow_html=True)
+    st.markdown(icon_header("3. Acoustic Biomarkers & Spectrogram", "activity", level=2, variant="amber", size=20), unsafe_allow_html=True)
 
     col_bio1, col_bio2, col_bio3, col_bio4 = st.columns(4)
     f0_mean = features.get("f0_mean", 0.0)

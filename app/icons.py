@@ -1,4 +1,4 @@
-"""Lucide SVG Icons helper for Streamlit UI components."""
+"""Lucide SVG Icons helper with high-contrast, theme-adaptive styling for Streamlit."""
 
 from typing import Optional
 
@@ -17,9 +17,136 @@ LUCIDE_SVG_PATHS = {
     "volume-2": '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>',
     "bar-chart": '<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
     "radio": '<circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>',
-    "search": '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
     "sparkles": '<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>',
 }
+
+
+def get_theme_styles() -> str:
+    """Returns CSS ensuring perfect visibility, contrast, and badge chips in both light & dark modes."""
+    return """
+    <style>
+    /* CSS Variables for Light Mode */
+    :root {
+        --lucide-hdr-color: #0f172a;
+        --lucide-sub-color: #475569;
+        
+        --badge-blue-fg: #1d4ed8;
+        --badge-blue-bg: #eff6ff;
+        --badge-blue-border: #bfdbfe;
+
+        --badge-purple-fg: #6d28d9;
+        --badge-purple-bg: #f5f3ff;
+        --badge-purple-border: #ddd6fe;
+
+        --badge-green-fg: #047857;
+        --badge-green-bg: #ecfdf5;
+        --badge-green-border: #a7f3d0;
+
+        --badge-amber-fg: #b45309;
+        --badge-amber-bg: #fffbeb;
+        --badge-amber-border: #fde68a;
+    }
+
+    /* Dark Mode: triggered by OS prefers-color-scheme or Streamlit dark theme container */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --lucide-hdr-color: #f8fafc;
+            --lucide-sub-color: #94a3b8;
+
+            --badge-blue-fg: #93c5fd;
+            --badge-blue-bg: rgba(30, 58, 138, 0.4);
+            --badge-blue-border: rgba(147, 197, 253, 0.35);
+
+            --badge-purple-fg: #c4b5fd;
+            --badge-purple-bg: rgba(76, 29, 149, 0.4);
+            --badge-purple-border: rgba(196, 181, 253, 0.35);
+
+            --badge-green-fg: #6ee7b7;
+            --badge-green-bg: rgba(6, 78, 59, 0.4);
+            --badge-green-border: rgba(110, 231, 183, 0.35);
+
+            --badge-amber-fg: #fcd34d;
+            --badge-amber-bg: rgba(120, 53, 15, 0.4);
+            --badge-amber-border: rgba(252, 211, 77, 0.35);
+        }
+    }
+
+    /* Fallback Streamlit explicit dark theme attribute */
+    [data-theme="dark"],
+    [data-testid="stAppViewContainer"].dark,
+    .stApp[data-theme="dark"] {
+        --lucide-hdr-color: #f8fafc !important;
+        --lucide-sub-color: #94a3b8 !important;
+
+        --badge-blue-fg: #93c5fd !important;
+        --badge-blue-bg: rgba(30, 58, 138, 0.4) !important;
+        --badge-blue-border: rgba(147, 197, 253, 0.35) !important;
+
+        --badge-purple-fg: #c4b5fd !important;
+        --badge-purple-bg: rgba(76, 29, 149, 0.4) !important;
+        --badge-purple-border: rgba(196, 181, 253, 0.35) !important;
+
+        --badge-green-fg: #6ee7b7 !important;
+        --badge-green-bg: rgba(6, 78, 59, 0.4) !important;
+        --badge-green-border: rgba(110, 231, 183, 0.35) !important;
+
+        --badge-amber-fg: #fcd34d !important;
+        --badge-amber-bg: rgba(120, 53, 15, 0.4) !important;
+        --badge-amber-border: rgba(252, 211, 77, 0.35) !important;
+    }
+
+    /* Header styling */
+    .icon-heading {
+        display: flex;
+        align-items: center;
+        margin-top: 1.25rem;
+        margin-bottom: 0.65rem;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        color: var(--lucide-hdr-color);
+    }
+    .icon-heading h1 { font-size: 1.85rem; }
+    .icon-heading h2 { font-size: 1.35rem; }
+    .icon-heading h3 { font-size: 1.15rem; }
+
+    /* Badge chip wrapper */
+    .lucide-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        padding: 6px;
+        margin-right: 11px;
+        flex-shrink: 0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        transition: transform 0.15s ease;
+    }
+    .lucide-chip:hover {
+        transform: scale(1.04);
+    }
+
+    .chip-blue {
+        color: var(--badge-blue-fg);
+        background: var(--badge-blue-bg);
+        border: 1px solid var(--badge-blue-border);
+    }
+    .chip-purple {
+        color: var(--badge-purple-fg);
+        background: var(--badge-purple-bg);
+        border: 1px solid var(--badge-purple-border);
+    }
+    .chip-green {
+        color: var(--badge-green-fg);
+        background: var(--badge-green-bg);
+        border: 1px solid var(--badge-green-border);
+    }
+    .chip-amber {
+        color: var(--badge-amber-fg);
+        background: var(--badge-amber-bg);
+        border: 1px solid var(--badge-amber-border);
+    }
+    </style>
+    """
 
 
 def lucide_svg(
@@ -29,9 +156,9 @@ def lucide_svg(
     stroke_width: float = 2.0,
     extra_style: str = "",
 ) -> str:
-    """Returns a standalone inline SVG element from Lucide icons."""
+    """Returns standalone inline SVG element from Lucide icons."""
     paths = LUCIDE_SVG_PATHS.get(name, LUCIDE_SVG_PATHS["sparkles"])
-    style_attr = f'style="vertical-align: middle; display: inline-block; {extra_style}"'
+    style_attr = f'style="vertical-align: middle; display: block; {extra_style}"'
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" '
         f'viewBox="0 0 24 24" fill="none" stroke="{color}" stroke-width="{stroke_width}" '
@@ -43,16 +170,18 @@ def icon_header(
     title: str,
     icon_name: str,
     level: int = 2,
-    size: int = 22,
-    color: str = "var(--text-color, #1f2937)",
+    variant: str = "blue",
+    size: int = 20,
 ) -> str:
-    """Returns HTML for a heading accompanied by a Lucide SVG icon."""
-    svg = lucide_svg(icon_name, size=size, color=color, extra_style="margin-right: 8px;")
+    """Returns HTML for a heading with a crisp, theme-aware Lucide icon badge."""
+    svg = lucide_svg(icon_name, size=size, color="currentColor")
     tag = f"h{level}"
-    font_sizes = {1: "1.85rem", 2: "1.4rem", 3: "1.15rem"}
+    font_sizes = {1: "1.9rem", 2: "1.35rem", 3: "1.15rem"}
     f_size = font_sizes.get(level, "1.2rem")
+
     return (
-        f'<{tag} style="display: flex; align-items: center; font-size: {f_size}; '
-        f'margin-top: 1.2rem; margin-bottom: 0.6rem; font-weight: 600;">'
-        f'{svg} <span>{title}</span></{tag}>'
+        f'<{tag} class="icon-heading" style="font-size: {f_size};">'
+        f'<span class="lucide-chip chip-{variant}">{svg}</span>'
+        f'<span>{title}</span>'
+        f'</{tag}>'
     )
