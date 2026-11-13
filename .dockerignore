@@ -1,0 +1,9 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+data/raw/*.tar.gz
+data/raw/*.mp3
+tests/
+.pytest_cache/

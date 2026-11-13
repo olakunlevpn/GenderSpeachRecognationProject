@@ -1,0 +1,4 @@
+Model,Type,Gender Accuracy (%),Gender Macro F1,Age Accuracy (%),Age Macro F1,Age Off-by-One Acc (%),Age MAE (Brackets),Inference Latency (ms/sample)
+SVM (RBF),Classical ML,92.77%,0.927,21.69%,0.183,53.01%,1.71,0.14 ms
+Random Forest,Classical ML,93.98%,0.940,22.89%,0.191,49.40%,1.82,0.67 ms
+BiLSTM + Attention,Deep Learning (BiLSTM),67.47%,0.670,13.25%,0.063,44.58%,1.75,2.26 ms
